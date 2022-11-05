@@ -1,0 +1,10 @@
+
+
+OPTION psf_version = 2.1;
+
+BEGIN DRIVER tinyJAMBU_FSR_128_N
+	OPTION supported_peripherals = (tinyJAMBU_FSR_128_N);
+	OPTION copyfiles = all;
+	OPTION VERSION = 1.0;
+	OPTION NAME = tinyJAMBU_FSR_128_N;
+END DRIVER
