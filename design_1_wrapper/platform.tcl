@@ -26,3 +26,8 @@ platform config -updatehw {D:/vitis-tinyJAMBU-hardware/axi_FSR_128_N/design_1_wr
 platform active {design_1_wrapper}
 bsp reload
 platform generate -domains 
+platform active {design_1_wrapper}
+platform config -updatehw {D:/vitis-tinyJAMBU-hardware/vitis-128_FSR_N/axi_FSR_128_N/design_1_wrapper.xsa}
+platform config -updatehw {D:/vitis-tinyJAMBU-hardware/vitis-128_FSR_N/axi_FSR_128_N/design_1_wrapper.xsa}
+platform clean
+platform generate

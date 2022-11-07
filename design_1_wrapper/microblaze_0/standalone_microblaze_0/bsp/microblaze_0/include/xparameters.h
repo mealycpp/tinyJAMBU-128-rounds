@@ -606,13 +606,13 @@
 
 /******************************************************************/
 
-/* Definitions for driver TINYJAMBU_FSR_128_N */
-#define XPAR_TINYJAMBU_FSR_128_N_NUM_INSTANCES 1
+/* Definitions for driver TINY_FIXED */
+#define XPAR_TINY_FIXED_NUM_INSTANCES 1
 
-/* Definitions for peripheral TINYJAMBU_FSR_128_N_0 */
-#define XPAR_TINYJAMBU_FSR_128_N_0_DEVICE_ID 0
-#define XPAR_TINYJAMBU_FSR_128_N_0_S00_AXI_BASEADDR 0x44A00000
-#define XPAR_TINYJAMBU_FSR_128_N_0_S00_AXI_HIGHADDR 0x44A0FFFF
+/* Definitions for peripheral TINY_FIXED_0 */
+#define XPAR_TINY_FIXED_0_DEVICE_ID 0
+#define XPAR_TINY_FIXED_0_S00_AXI_BASEADDR 0x44A00000
+#define XPAR_TINY_FIXED_0_S00_AXI_HIGHADDR 0x44A0FFFF
 
 
 /******************************************************************/

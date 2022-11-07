@@ -35,7 +35,7 @@
       "reset_inv_0": "",
       "axi_uartlite_0": "",
       "axi_timer_0": "",
-      "tinyJAMBU_FSR_128_N_0": ""
+      "tiny_fixed_0": ""
     },
     "interface_ports": {
       "usb_uart": {
@@ -952,11 +952,11 @@
         "xci_path": "ip\\design_1_axi_timer_0_0\\design_1_axi_timer_0_0.xci",
         "inst_hier_path": "axi_timer_0"
       },
-      "tinyJAMBU_FSR_128_N_0": {
-        "vlnv": "xilinx.com:user:tinyJAMBU_FSR_128_N:1.0",
-        "xci_name": "design_1_tinyJAMBU_FSR_128_N_0_0",
-        "xci_path": "ip\\design_1_tinyJAMBU_FSR_128_N_0_0\\design_1_tinyJAMBU_FSR_128_N_0_0.xci",
-        "inst_hier_path": "tinyJAMBU_FSR_128_N_0"
+      "tiny_fixed_0": {
+        "vlnv": "xilinx.com:user:tiny_fixed:1.0",
+        "xci_name": "design_1_tiny_fixed_0_0",
+        "xci_path": "ip\\design_1_tiny_fixed_0_0\\design_1_tiny_fixed_0_0.xci",
+        "inst_hier_path": "tiny_fixed_0"
       }
     },
     "interface_nets": {
@@ -975,7 +975,7 @@
       "microblaze_0_axi_periph_M01_AXI": {
         "interface_ports": [
           "microblaze_0_axi_periph/M01_AXI",
-          "tinyJAMBU_FSR_128_N_0/S00_AXI"
+          "tiny_fixed_0/S00_AXI"
         ]
       },
       "microblaze_0_axi_periph_M02_AXI": {
@@ -1050,7 +1050,7 @@
           "microblaze_0_axi_periph/M02_ACLK",
           "axi_timer_0/s_axi_aclk",
           "microblaze_0_axi_periph/M03_ACLK",
-          "tinyJAMBU_FSR_128_N_0/s00_axi_aclk"
+          "tiny_fixed_0/s00_axi_aclk"
         ]
       },
       "microblaze_0_intr": {
@@ -1097,7 +1097,7 @@
           "microblaze_0_axi_periph/M02_ARESETN",
           "axi_timer_0/s_axi_aresetn",
           "microblaze_0_axi_periph/M03_ARESETN",
-          "tinyJAMBU_FSR_128_N_0/s00_axi_aresetn"
+          "tiny_fixed_0/s00_axi_aresetn"
         ]
       },
       "sys_clock_1": {
@@ -1133,8 +1133,8 @@
                 "offset": "0x41200000",
                 "range": "64K"
               },
-              "SEG_tinyJAMBU_FSR_128_N_0_S00_AXI_reg": {
-                "address_block": "/tinyJAMBU_FSR_128_N_0/S00_AXI/S00_AXI_reg",
+              "SEG_tiny_fixed_0_S00_AXI_reg": {
+                "address_block": "/tiny_fixed_0/S00_AXI/S00_AXI_reg",
                 "offset": "0x44A00000",
                 "range": "64K",
                 "offset_base_param": "C_S00_AXI_BASEADDR",

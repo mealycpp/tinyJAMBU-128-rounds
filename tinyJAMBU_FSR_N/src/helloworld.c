@@ -48,7 +48,7 @@
 #include <stdio.h>
 #include "platform.h"
 #include "xil_printf.h"
-#include "tinyJAMBU_FSR_128_N.h"
+#include "tiny_fixed.h"
 
 #define NROUND1 5
 #define NROUND2 8
@@ -60,25 +60,28 @@
 
 void state_update(unsigned int* state, const unsigned char* key, unsigned int steps) {
 
-	TINYJAMBU_FSR_128_N_mWriteReg(0x44a00000, TINYJAMBU_FSR_128_N_S00_AXI_SLV_REG0_OFFSET, state[0]);
-	TINYJAMBU_FSR_128_N_mWriteReg(0x44a00000, TINYJAMBU_FSR_128_N_S00_AXI_SLV_REG1_OFFSET, state[1]);
-	TINYJAMBU_FSR_128_N_mWriteReg(0x44a00000, TINYJAMBU_FSR_128_N_S00_AXI_SLV_REG2_OFFSET, state[2]);
-	TINYJAMBU_FSR_128_N_mWriteReg(0x44a00000, TINYJAMBU_FSR_128_N_S00_AXI_SLV_REG3_OFFSET, state[3]);
+	TINY_FIXED_mWriteReg(0x44a00000, TINY_FIXED_S00_AXI_SLV_REG0_OFFSET, state[0]);
+	TINY_FIXED_mWriteReg(0x44a00000, TINY_FIXED_S00_AXI_SLV_REG1_OFFSET, state[1]);
+	TINY_FIXED_mWriteReg(0x44a00000, TINY_FIXED_S00_AXI_SLV_REG2_OFFSET, state[2]);
+	TINY_FIXED_mWriteReg(0x44a00000, TINY_FIXED_S00_AXI_SLV_REG3_OFFSET, state[3]);
 
-	TINYJAMBU_FSR_128_N_mWriteReg(0x44a00000, TINYJAMBU_FSR_128_N_S00_AXI_SLV_REG4_OFFSET, ((unsigned int*)key)[0]);
-	TINYJAMBU_FSR_128_N_mWriteReg(0x44a00000, TINYJAMBU_FSR_128_N_S00_AXI_SLV_REG5_OFFSET, ((unsigned int*)key)[1]);
-	TINYJAMBU_FSR_128_N_mWriteReg(0x44a00000, TINYJAMBU_FSR_128_N_S00_AXI_SLV_REG6_OFFSET, ((unsigned int*)key)[2]);
-	TINYJAMBU_FSR_128_N_mWriteReg(0x44a00000, TINYJAMBU_FSR_128_N_S00_AXI_SLV_REG7_OFFSET, ((unsigned int*)key)[3]);
+	TINY_FIXED_mWriteReg(0x44a00000, TINY_FIXED_S00_AXI_SLV_REG4_OFFSET, ((unsigned int*)key)[0]);
+	TINY_FIXED_mWriteReg(0x44a00000, TINY_FIXED_S00_AXI_SLV_REG5_OFFSET, ((unsigned int*)key)[1]);
+	TINY_FIXED_mWriteReg(0x44a00000, TINY_FIXED_S00_AXI_SLV_REG6_OFFSET, ((unsigned int*)key)[2]);
+	TINY_FIXED_mWriteReg(0x44a00000, TINY_FIXED_S00_AXI_SLV_REG7_OFFSET, ((unsigned int*)key)[3]);
 
-	TINYJAMBU_FSR_128_N_mWriteReg(0x44a00000, TINYJAMBU_FSR_128_N_S00_AXI_SLV_REG8_OFFSET, steps);
+	TINY_FIXED_mWriteReg(0x44a00000, TINY_FIXED_S00_AXI_SLV_REG8_OFFSET, steps);
 
-	while (!(TINYJAMBU_FSR_128_N_mReadReg(0x44a00000, TINYJAMBU_FSR_128_N_S00_AXI_SLV_REG9_OFFSET) && 0x00000001)) {
+	TINY_FIXED_mWriteReg(0x44a00000, TINY_FIXED_S00_AXI_SLV_REG9_OFFSET, 0x00000001);
+	TINY_FIXED_mWriteReg(0x44a00000, TINY_FIXED_S00_AXI_SLV_REG9_OFFSET, 0x00000000);
+
+	while ((TINY_FIXED_mReadReg(0x44a00000, TINY_FIXED_S00_AXI_SLV_REG14_OFFSET) && 0x00000001) == 0) {
 
 	}
-	state[0] = TINYJAMBU_FSR_128_N_mReadReg(0x44a00000, TINYJAMBU_FSR_128_N_S00_AXI_SLV_REG9_OFFSET);
-	state[1] = TINYJAMBU_FSR_128_N_mReadReg(0x44a00000, TINYJAMBU_FSR_128_N_S00_AXI_SLV_REG10_OFFSET);
-	state[2] = TINYJAMBU_FSR_128_N_mReadReg(0x44a00000, TINYJAMBU_FSR_128_N_S00_AXI_SLV_REG11_OFFSET);
-	state[3] = TINYJAMBU_FSR_128_N_mReadReg(0x44a00000, TINYJAMBU_FSR_128_N_S00_AXI_SLV_REG12_OFFSET);
+	state[0] = TINY_FIXED_mReadReg(0x44a00000, TINY_FIXED_S00_AXI_SLV_REG10_OFFSET);
+	state[1] = TINY_FIXED_mReadReg(0x44a00000, TINY_FIXED_S00_AXI_SLV_REG11_OFFSET);
+	state[2] = TINY_FIXED_mReadReg(0x44a00000, TINY_FIXED_S00_AXI_SLV_REG12_OFFSET);
+	state[3] = TINY_FIXED_mReadReg(0x44a00000, TINY_FIXED_S00_AXI_SLV_REG13_OFFSET);
 }
 
 
@@ -278,10 +281,11 @@ void test_encrypt_decrypt() {
 int main()
 {
     init_platform();
-
     print("Hello World\n\r");
     print("Successfully ran Hello World application");
-    void test_encrypt_decrypt();
+    for (int i = 0; i < 100000; i++) {
+    	test_encrypt_decrypt();
+    }
     cleanup_platform();
     return 0;
 }
