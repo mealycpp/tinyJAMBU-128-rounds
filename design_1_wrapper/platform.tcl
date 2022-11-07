@@ -31,3 +31,5 @@ platform config -updatehw {D:/vitis-tinyJAMBU-hardware/vitis-128_FSR_N/axi_FSR_1
 platform config -updatehw {D:/vitis-tinyJAMBU-hardware/vitis-128_FSR_N/axi_FSR_128_N/design_1_wrapper.xsa}
 platform clean
 platform generate
+platform clean
+platform generate

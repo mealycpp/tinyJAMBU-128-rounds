@@ -257,7 +257,7 @@ void test_encrypt_decrypt() {
     unsigned char adlen = 0;
     unsigned char nsec[80] = {};
 
-    printf("Running encrypt\n");
+    print("Running encrypt\n");
     crypto_aead_encrypt(
         c, &clen,
         m, mlen,
@@ -265,24 +265,24 @@ void test_encrypt_decrypt() {
         nsec,
         npub,
         key);
-    printf("clen is: %d \n", (unsigned int)clen);
-    for (size_t i = 0; i < clen; i++)
-    {
-        printf("%02X \n", c[i]);
-    }
-    printf("Running decrypt\n");
+//    xil_printf("clen is: %d \n", (unsigned int)clen);
+//    for (size_t i = 0; i < clen; i++)
+//    {
+//    	xil_printf("%02X \n", c[i]);
+//    }
+    print("Running decrypt\n");
     if (crypto_aead_decrypt(m, &mlen, nsec, c, clen, ad, adlen, npub, key) == 0)
     {
-        printf("tag is verified\n");
+        print("v\n");
     } else {
-        printf("tag is not verified\n");
+    	print("!v\n");
     }
 }
 int main()
 {
     init_platform();
     print("Hello World\n\r");
-    print("Successfully ran Hello World application");
+//    print("Successfully ran Hello World application");
     for (int i = 0; i < 100000; i++) {
     	test_encrypt_decrypt();
     }
