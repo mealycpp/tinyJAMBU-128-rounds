@@ -33,3 +33,8 @@ platform clean
 platform generate
 platform clean
 platform generate
+platform active {design_1_wrapper}
+platform config -updatehw {D:/vitis-tinyJAMBU-hardware/vitis-128_FSR_N/axi_FSR_128_N/design_1_wrapper.xsa}
+platform generate -domains 
+platform clean
+platform generate

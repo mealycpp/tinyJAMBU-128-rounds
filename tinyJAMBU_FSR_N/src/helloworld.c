@@ -49,6 +49,7 @@
 #include "platform.h"
 #include "xil_printf.h"
 #include "tiny_fixed.h"
+#include "xtmrctr.h"
 
 #define NROUND1 5
 #define NROUND2 8
@@ -60,6 +61,7 @@
 
 void state_update(unsigned int* state, const unsigned char* key, unsigned int steps) {
 
+//	print("su\r\n");
 	TINY_FIXED_mWriteReg(0x44a00000, TINY_FIXED_S00_AXI_SLV_REG0_OFFSET, state[0]);
 	TINY_FIXED_mWriteReg(0x44a00000, TINY_FIXED_S00_AXI_SLV_REG1_OFFSET, state[1]);
 	TINY_FIXED_mWriteReg(0x44a00000, TINY_FIXED_S00_AXI_SLV_REG2_OFFSET, state[2]);
@@ -75,13 +77,14 @@ void state_update(unsigned int* state, const unsigned char* key, unsigned int st
 	TINY_FIXED_mWriteReg(0x44a00000, TINY_FIXED_S00_AXI_SLV_REG9_OFFSET, 0x00000001);
 	TINY_FIXED_mWriteReg(0x44a00000, TINY_FIXED_S00_AXI_SLV_REG9_OFFSET, 0x00000000);
 
-	while ((TINY_FIXED_mReadReg(0x44a00000, TINY_FIXED_S00_AXI_SLV_REG14_OFFSET) && 0x00000001) == 0) {
+	while ((TINY_FIXED_mReadReg(0x44a00000, TINY_FIXED_S00_AXI_SLV_REG14_OFFSET) & 0x00000001) == 0) {
 
 	}
 	state[0] = TINY_FIXED_mReadReg(0x44a00000, TINY_FIXED_S00_AXI_SLV_REG10_OFFSET);
 	state[1] = TINY_FIXED_mReadReg(0x44a00000, TINY_FIXED_S00_AXI_SLV_REG11_OFFSET);
 	state[2] = TINY_FIXED_mReadReg(0x44a00000, TINY_FIXED_S00_AXI_SLV_REG12_OFFSET);
 	state[3] = TINY_FIXED_mReadReg(0x44a00000, TINY_FIXED_S00_AXI_SLV_REG13_OFFSET);
+//	print("sud\r\n");
 }
 
 
@@ -246,18 +249,17 @@ int crypto_aead_decrypt(
 }
 
 void test_encrypt_decrypt() {
-//    unsigned int state[4] = {0, 0, 0, 0};
     const unsigned char key[16] = {0x00,0x01,0x02,0x03,0x04,0x05,0x06,0x07,0x08,0x09,0x0A,0x0B,0x0C,0x0D,0x0E,0x0F};
     const unsigned char npub[12] = {0x00,0x01,0x02,0x03,0x04,0x05,0x06,0x07,0x08,0x09,0x0A,0x0B};
-    unsigned char c[80];
+    unsigned char c[10];
     unsigned long long clen = 0;
-    unsigned char m[80] = {"abcd"};
+    unsigned char m[10] = {"abcd"};
     unsigned long long mlen = 4;
-    unsigned char ad[80];
+    unsigned char ad[10];
     unsigned char adlen = 0;
-    unsigned char nsec[80] = {};
+    unsigned char nsec[10];
 
-    print("Running encrypt\n");
+//    print("e\r\n");
     crypto_aead_encrypt(
         c, &clen,
         m, mlen,
@@ -270,22 +272,49 @@ void test_encrypt_decrypt() {
 //    {
 //    	xil_printf("%02X \n", c[i]);
 //    }
-    print("Running decrypt\n");
+//    print("d\r\n");
     if (crypto_aead_decrypt(m, &mlen, nsec, c, clen, ad, adlen, npub, key) == 0)
     {
-        print("v\n");
+//        print("v\r\n");
     } else {
-    	print("!v\n");
+//    	print("!v\r\n");
     }
+}
+void test_state() {
+    const unsigned char key[16] = {0x00,0x01,0x02,0x03,0x04,0x05,0x06,0x07,0x08,0x09,0x0A,0x0B,0x0C,0x0D,0x0E,0x0F};
+    unsigned int state[4] = {};
+//    const unsigned char npub[12] = {0x00,0x01,0x02,0x03,0x04,0x05,0x06,0x07,0x08,0x09,0x0A,0x0B};
+//    unsigned char c[10];
+//    unsigned long long clen = 0;
+//    unsigned char m[10] = {"abcd"};
+//    unsigned long long mlen = 4;
+//    unsigned char ad[10];
+//    unsigned char adlen = 0;
+//    unsigned char nsec[10];
+
+//    print("e\r\n");
+    state_update(state, key, 5);
 }
 int main()
 {
     init_platform();
     print("Hello World\n\r");
-//    print("Successfully ran Hello World application");
-    for (int i = 0; i < 100000; i++) {
-    	test_encrypt_decrypt();
-    }
+    XTmrCtr axi_tmr;
+    XTmrCtr_Initialize(&axi_tmr, XPAR_AXI_TIMER_0_DEVICE_ID);
+    XTmrCtr_Reset(&axi_tmr, 0);
+    XTmrCtr_Start(&axi_tmr, 0);
+    u32 current_time = XTmrCtr_GetValue(&axi_tmr, 0);
+//    for (int i = 0; i < 1000; i++) {
+//    	test_encrypt_decrypt();
+//    }
+    test_state();
+    XTmrCtr_Stop(&axi_tmr, 0);
+    u32 total_cycles = XTmrCtr_GetValue(&axi_tmr, 0) - current_time;
+    print("cycles:");
+    xil_printf("%u", total_cycles);
+    print("freq: ");
+    xil_printf("%d", XPAR_AXI_TIMER_0_CLOCK_FREQ_HZ);
+    print("\r\n");
     cleanup_platform();
     return 0;
 }
